@@ -4,7 +4,7 @@ Repo Hunter <br>
 </h1>
 
 
-This small script can download or update all the GitHub repo of your choice.
+This small script can download and update all the GitHub repositories of your choice.
 
 ![Repo_hunter](https://user-images.githubusercontent.com/8291014/186148252-d7d2cdc3-689d-48db-9002-bb6ea316381b.png)
 
