@@ -4,7 +4,7 @@ echo "What topic you are interested in?"
 read input
 input1=`echo $input | tr '[:upper:]' '[:lower:]'| tr " " "+"`
 topic=`echo $input1 | tr " " "+"`
-repos=$(curl -s "https://api.github.com/search/repositories?q=$topic&sort=stars&order=desc" | jq -r '.items[].full_name')
+repos=$(curl -s "https://api.github.com/search/repositories?q=stars%3A%3E50+$topic+pushed%3A%3E2022-01-01+sort:stars+in%3Aname" | jq -r '.items[].full_name')
 for repo in $repos
 do
 echo "Checking $repo"
