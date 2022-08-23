@@ -8,3 +8,4 @@ This small script can download and update all the GitHub repositories of your ch
 
 ![Repo_hunter](https://user-images.githubusercontent.com/8291014/186148252-d7d2cdc3-689d-48db-9002-bb6ea316381b.png)
 
+Image credit: Midjourney
