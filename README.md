@@ -6,6 +6,6 @@ Repo Hunter <br>
 
 This small script can clone and update (if already exist on your system) all the GitHub repositories of your choice.
 
-![Repo_hunter](https://user-images.githubusercontent.com/8291014/186148252-d7d2cdc3-689d-48db-9002-bb6ea316381b.png)
+![image](https://github.com/iamthefrogy/repo_hunter/assets/8291014/78762bbc-8f67-4e49-9f46-3e6fae55780a)
 
-Image credit: Midjourney
+Logo Image credit: Midjourney
