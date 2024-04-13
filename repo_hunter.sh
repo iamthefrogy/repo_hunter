@@ -1,28 +1,37 @@
 #!/bin/bash
 
-echo -e "\e[93mWhat topic you are interested in?\e[0m"
+# Set up color variables
+YELLOW='\033[1;93m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+echo -e "${YELLOW}What topic are you interested in?${NC}"
 read input
-input1=`echo $input | tr '[:upper:]' '[:lower:]'| tr " " "+"`
-topic=`echo $input1 | tr " " "+"`
+topic=$(echo $input | tr '[:upper:]' '[:lower:]' | tr " " "+")
 
-tpc=$(curl -s "https://api.github.com/search/repositories?q=stars%3A%3E50+$topic+sort:stars+in%3Aname&per_page=5" | jq -r '.total_count')
+# Fetch the total count of repositories
+response=$(curl -s "https://api.github.com/search/repositories?q=stars%3A%3E50+$topic+sort:stars+in%3Aname&per_page=5")
+tpc=$(echo "$response" | jq -r '.total_count')
 
-if [ -z "$tpc" ]
-then
-        echo "Sorry, no results found"
-        exit 1
-else
-        pg=$(($tpc/5))
+# Check if total_count is null or empty
+if [[ -z "$tpc" || "$tpc" == "null" ]]; then
+    echo -e "${YELLOW}Sorry, no results found${NC}"
+    exit 1
 fi
+
+# Calculate the number of pages needed, rounding up
+pg=$(( (tpc + 4) / 5 ))
 
 for i in $(seq 1 $pg);
 do
-repos=$(curl -s "https://api.github.com/search/repositories?q=stars%3A%3E50+$topic+sort:stars+in%3Aname&per_page=5&page=$i" | jq -r '.items[].html_url')
-echo "$repos" | tee -a $topic-repos.txt
+    # Fetch repositories for each page
+    repos=$(curl -s "https://api.github.com/search/repositories?q=stars%3A%3E50+$topic+sort:stars+in%3Aname&per_page=5&page=$i" | jq -r '.items[]?.html_url')
+    if [[ -z "$repos" || "$repos" == "null" ]]; then
+        break  # Stop the loop if no repositories are returned
+    fi
+    echo "$repos" | tee -a $topic-repos.txt
 done
 
 if [ -e $topic-repos.txt ] ; then
-        echo -e "\e[93mTotal repos found: \e[32m$(cat $topic-repos.txt | wc -l)\e[0m"
-else
-        :
+    echo -e "${YELLOW}Total repos found: ${GREEN}$(cat $topic-repos.txt | wc -l)${NC}"
 fi
